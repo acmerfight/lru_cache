@@ -50,14 +50,3 @@ class LruCache(object):
             for item in sorted_items:
                 key += item
         return key
-
-
-@LruCache(maxsize=2, timeout=3)
-def foo(a):
-    print "into"
-    return a
-
-@LruCache(maxsize=2)
-def bar(a):
-    print "into"
-    return a + 1
