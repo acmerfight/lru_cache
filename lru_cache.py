@@ -6,14 +6,13 @@ from collections import OrderedDict
 
 
 class LruCache(object):
-    lock = RLock()
-    cache_size = 0
 
     def __init__(self, maxsize=100, timeout=3600):
         self.maxsize = maxsize
         self.timeout = timeout
         self.cache = OrderedDict()
         self.is_full = False
+        self.lock = RLock()
 
     def __call__(self, func):
 
@@ -40,7 +39,6 @@ class LruCache(object):
                 else:
                     self.cache[key] = result_tuple
                     self.is_full = (len(self.cache) >= self.maxsize) 
-            print self.cache
             return result_tuple[0]
         return wrapper
 
