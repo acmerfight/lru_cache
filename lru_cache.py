@@ -29,7 +29,7 @@ class LruCache(object):
                         return result
                     else:
                         del self.cache[key]
-                        self.is_full = (len(self.cache) > self.maxsize) 
+                        self.is_full = (len(self.cache) >= self.maxsize) 
             result_tuple = func(*args, **kwds), int(time.time())
             with self.lock:
                 if key in self.cache:
@@ -39,7 +39,7 @@ class LruCache(object):
                     self.cache[key] = result_tuple
                 else:
                     self.cache[key] = result_tuple
-                    self.is_full = (len(self.cache) > self.maxsize) 
+                    self.is_full = (len(self.cache) >= self.maxsize) 
             print self.cache
             return result_tuple[0]
         return wrapper
