@@ -65,6 +65,11 @@ class TesLruCache(unittest.TestCase):
         for i in xrange(10):
             threading.Thread(target=foo, args=(i, )).start()
 
+        main_thread = threading.currentThread()
+        for t in threading.enumerate():
+            if t is not main_thread:
+                t.join()
+
         foo(random.randint(0, 9)) 
         self.assertEqual(set(a), set(range(10)))
 
@@ -84,6 +89,11 @@ class TesLruCache(unittest.TestCase):
         for i in xrange(10):
             threading.Thread(target=foo, args=(i, )).start()
             threading.Thread(target=bar, args=(i, )).start()
+
+        main_thread = threading.currentThread()
+        for t in threading.enumerate():
+            if t is not main_thread:
+                t.join()
 
         feed = random.randint(0 ,9)
         self.assertEqual(foo(feed), feed)
