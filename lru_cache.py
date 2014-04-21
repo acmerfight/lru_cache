@@ -4,6 +4,8 @@ import time
 from threading import RLock
 from collections import OrderedDict
 
+from ommited import OmittedType
+
 
 class LruCache(object):
 
@@ -13,14 +15,15 @@ class LruCache(object):
         self.cache = OrderedDict()
         self.is_full = False
         self.lock = RLock()
+        self.Omitted_object = OmittedType()
 
     def __call__(self, func):
 
         def wrapper(*args, **kwds):
             key = self.make_key(args, kwds)
             with self.lock:
-                result_tuple = self.cache.get(key)
-                if result_tuple is not None:
+                result_tuple = self.cache.get(key, self.Omitted_object)
+                if result_tuple is not self.Omitted_object:
                     result, old_time = result_tuple
                     if int(time.time()) - old_time <= self.timeout:
                         del self.cache[key]

@@ -19,6 +19,17 @@ class TesLruCache(unittest.TestCase):
         foo(1)
         self.assertEqual(a, [1])
 
+    def test_cache_none(self):
+        a = []
+        @LruCache(maxsize=2, timeout=1)
+        def foo(num):
+            a.append(num)
+            return None 
+
+        foo(1)
+        foo(1)
+        self.assertEqual(a, [1])
+
     def test_cache_when_timeout(self):
         a = []
         @LruCache(maxsize=2, timeout=1)
