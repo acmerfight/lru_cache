@@ -57,5 +57,28 @@ class TesLruCache(unittest.TestCase):
         foo(random.randint(0, 9)) 
         self.assertEqual(set(a), set(range(10)))
 
+    def test_cache_with_multi_thread_two_func(self):
+        a = []
+        @LruCache(maxsize=10, timeout=1)
+        def foo(num):
+            a.append(num)
+            return num
+
+        b = []
+        @LruCache(maxsize=10, timeout=1)
+        def bar(num):
+            b.append(num)
+            return num + 1
+
+        for i in xrange(10):
+            threading.Thread(target=foo, args=(i, )).start()
+            threading.Thread(target=bar, args=(i, )).start()
+
+        feed = random.randint(0 ,9)
+        self.assertEqual(foo(feed), feed)
+        self.assertEqual(bar(feed), feed + 1)
+        self.assertEqual(set(a), set(range(10)))
+        self.assertEqual(set(b), set(range(10)))
+
 if __name__ == "__main__":
     unittest.main()
