@@ -1,4 +1,4 @@
-#coding=utf-8
+# coding=utf-8
 
 import time
 from threading import RLock
@@ -34,7 +34,7 @@ class LruCache(object):
                             return result
                         else:
                             del self.cache[key]
-                            self.is_full = (len(self.cache) >= self.maxsize) 
+                            self.is_full = (len(self.cache) >= self.maxsize)
                 result_tuple = func(*args, **kwds), int(time.time())
                 with self.lock:
                     if key in self.cache:
@@ -44,7 +44,7 @@ class LruCache(object):
                         self.cache[key] = result_tuple
                     else:
                         self.cache[key] = result_tuple
-                        self.is_full = (len(self.cache) >= self.maxsize) 
+                        self.is_full = (len(self.cache) >= self.maxsize)
                 return result_tuple[0]
         elif self.timeout is None and self.maxsize is None:
             def wrapper(*args, **kwds):
@@ -52,8 +52,10 @@ class LruCache(object):
                 result = self.cache.get(key, self.Omitted_object)
                 if result is self.Omitted_object:
                     result = func(*args, **kwds)
-                    cache[key] = result
+                    self.cache[key] = result
                 return result
+        elif self.timeout is None and self.maxsize is not None:
+            pass
         return wrapper
 
     @staticmethod
