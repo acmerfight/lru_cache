@@ -9,7 +9,7 @@ from ommited import OmittedType
 
 class LruCache(object):
 
-    def __init__(self, maxsize=100, timeout=3600):
+    def __init__(self, maxsize=None, timeout=None):
         self.maxsize = maxsize
         self.timeout = timeout
         self.Omitted_object = OmittedType()
@@ -19,6 +19,10 @@ class LruCache(object):
             self.lock = RLock()
         elif maxsize is None and timeout is None:
             self.cache = {}
+        elif maxsize is not None and timeout is None:
+            self.cache = OrderedDict()
+            self.is_full = False
+            self.lock = RLock()
 
     def __call__(self, func):
         if self.timeout is not None and self.maxsize is not None:
@@ -55,7 +59,25 @@ class LruCache(object):
                     self.cache[key] = result
                 return result
         elif self.timeout is None and self.maxsize is not None:
-            pass
+            def wrapper(*args, **kwds):
+                key = self.make_key(args, kwds)
+                with self.lock:
+                    result = self.cache.get(key, self.Omitted_object)
+                    if result is not self.Omitted_object:
+                        del self.cache[key]
+                        self.cache[key] = result
+                        return result
+                result = func(*args, **kwds)
+                with self.lock:
+                    if key in self.cache:
+                        pass
+                    elif self.is_full:
+                        self.cache.popitem(last=False)
+                        self.cache[key] = result
+                    else:
+                        self.cache[key] = result
+                        self.is_full = (len(self.cache) >= self.maxsize)
+                return result
         return wrapper
 
     @staticmethod

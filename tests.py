@@ -120,5 +120,17 @@ class TesLruCache(unittest.TestCase):
         foo(1)
         self.assertEqual(a, [1])
 
+    def test_cache_when_timeout_is_none(self):
+        a = []
+
+        @LruCache(maxsize=10)
+        def foo(num):
+            a.append(num)
+            return num
+
+        foo(1)
+        foo(1)
+        self.assertEqual(a, [1])
+
 if __name__ == "__main__":
     unittest.main()
