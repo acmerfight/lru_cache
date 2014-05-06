@@ -6,8 +6,8 @@ setup(
     author='acmerfight',
     author_email='acmerfight@gmail.com',
     packages=['lru_cache'],
-    url='http://pypi.python.org/pypi/TowelStuff/',
-    license='LICENSE.txt',
+    url='https://github.com/acmerfight/lru_cache',
+    license='GPL',
     description='thread safe lru cache',
     long_description=open('README.md').read(),
 )
