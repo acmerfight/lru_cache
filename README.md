@@ -1,9 +1,13 @@
 lru cahe
 =====================
 
-基于 **double link list** 和 **dict** （正好是**OrderedDict**）实现的一个线程安全的 lru cache decorator。
+Ba thread-safe lru cache decorator based on **double link list** and **dict** （**OrderedDict**）
 
-#### 使用方法
+### how to install
+
+pip install lru_cache
+
+#### how to use
 
     from cache import LruCache
 
