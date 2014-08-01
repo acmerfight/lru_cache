@@ -94,6 +94,7 @@ class LruCache(object):
                 result_tuple = func(*args, **kwds), int(time.time())
                 self.cache[key] = result_tuple
                 return result_tuple[0]
+        wrapper.__name__ = func.__name__
         return wrapper
 
     @staticmethod
