@@ -132,5 +132,60 @@ class TesLruCache(unittest.TestCase):
         foo(1)
         self.assertEqual(a, [1])
 
+    def test_cache_when_only_maxsize_is_none_normal(self):
+        a = []
+
+        @LruCache(timeout=2)
+        def foo(num):
+            a.append(num)
+            return num
+
+        foo(1)
+        foo(1)
+        self.assertEqual(a, [1])
+
+    def test_cache_when_only_maxsize_is_none_timeout(self):
+        a = []
+
+        @LruCache(timeout=1)
+        def foo(num):
+            a.append(num)
+            return num
+
+        foo(1)
+        time.sleep(2)
+        foo(1)
+        self.assertEqual(a, [1, 1])
+
+    def test_cache_when_only_maxsize_is_none_normal_method(self):
+        a = []
+
+        class Func(object):
+            @LruCache(timeout=2)
+            def foo(self, num):
+                a.append(num)
+                return num
+
+        fun = Func()
+        fun.foo(1)
+        fun.foo(1)
+        self.assertEqual(a, [1])
+
+    def test_cache_when_only_maxsize_is_none_normal_method_timeout(self):
+        a = []
+
+        class Func(object):
+            @LruCache(timeout=1)
+            def foo(self, num):
+                a.append(num)
+                return num
+
+        fun = Func()
+        fun.foo(1)
+        time.sleep(2)
+        fun.foo(1)
+        self.assertEqual(a, [1, 1])
+
+
 if __name__ == "__main__":
     unittest.main()

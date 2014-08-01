@@ -4,7 +4,7 @@ import time
 from threading import RLock
 from collections import OrderedDict
 
-from ommited import OmittedType
+from cache.ommited import OmittedType
 
 
 class LruCache(object):
@@ -17,7 +17,10 @@ class LruCache(object):
             self.cache = OrderedDict()
             self.is_full = False
             self.lock = RLock()
-        elif maxsize is None and timeout is None:
+        elif (
+                (maxsize is None and timeout is None) or
+                (maxsize is None and timeout is not None)
+        ):
             self.cache = {}
         elif maxsize is not None and timeout is None:
             self.cache = OrderedDict()
@@ -78,6 +81,19 @@ class LruCache(object):
                         self.cache[key] = result
                         self.is_full = (len(self.cache) >= self.maxsize)
                 return result
+        elif self.timeout is not None and self.maxsize is None:
+            def wrapper(*args, **kwds):
+                key = self.make_key(args, kwds)
+                result_tuple = self.cache.get(key, self.Omitted_object)
+                if result_tuple is not self.Omitted_object:
+                    result, old_time = result_tuple
+                    if int(time.time()) - old_time <= self.timeout:
+                        return result
+                    else:
+                        del self.cache[key]
+                result_tuple = func(*args, **kwds), int(time.time())
+                self.cache[key] = result_tuple
+                return result_tuple[0]
         return wrapper
 
     @staticmethod
