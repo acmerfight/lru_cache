@@ -1,7 +1,7 @@
 lru cahe
 =====================
 
-Ba thread-safe lru cache decorator based on **double link list** and **dict** （**OrderedDict**）
+Thread-safe lru cache decorator based on **double link list** and **dict** （**OrderedDict**）
 
 ### how to install
 
