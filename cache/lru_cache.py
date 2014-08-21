@@ -95,6 +95,7 @@ class LruCache(object):
                 self.cache[key] = result_tuple
                 return result_tuple[0]
         wrapper.__name__ = func.__name__
+        wrapper.cache == self.cache
         return wrapper
 
     @staticmethod
