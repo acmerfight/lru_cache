@@ -14,3 +14,7 @@ pip install lru_cache
     @LruCache(maxsize=2, timeout=1)
     def foo(num):
         return num
+        
+#### TODO
+
+invalidate cache
