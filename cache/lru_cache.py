@@ -1,8 +1,8 @@
 # coding=utf-8
 
 import time
-from threading import RLock
 from collections import OrderedDict
+from threading import RLock
 
 from cache.ommited import OmittedType
 
