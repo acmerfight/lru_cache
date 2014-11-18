@@ -98,6 +98,10 @@ class LruCache(object):
         wrapper.cache = self.cache
         return wrapper
 
+    def invalidate(self, key):
+        del self.cache[key]
+
+
     @staticmethod
     def make_key(args, kwds):
         key = args
