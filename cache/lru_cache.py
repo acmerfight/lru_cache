@@ -96,6 +96,7 @@ class LruCache(object):
                 return result_tuple[0]
         wrapper.__name__ = func.__name__
         wrapper.cache = self.cache
+        wrapper.invalidate = self.invalidate
         return wrapper
 
     def invalidate(self, key):

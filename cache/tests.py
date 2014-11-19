@@ -186,6 +186,17 @@ class TesLruCache(unittest.TestCase):
         fun.foo(1)
         self.assertEqual(a, [1, 1])
 
+    def test_invalidate(self):
+        a = []
+
+        @LruCache()
+        def foo(self, num):
+            a.append(num)
+            return num
+
+        foo(1)
+        self.assertEqual(a, [1])
+        foo.invalidate()
 
 if __name__ == "__main__":
     unittest.main()
