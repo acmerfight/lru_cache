@@ -99,7 +99,8 @@ class LruCache(object):
         wrapper.invalidate = self.invalidate
         return wrapper
 
-    def invalidate(self, key):
+    def invalidate(self, *args, **kwds):
+        key = self.make_key(args, kwds)
         del self.cache[key]
 
 
