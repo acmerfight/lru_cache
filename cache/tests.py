@@ -1,4 +1,4 @@
-#coding=utf-8
+# coding=utf-8
 import random
 import time
 import threading
@@ -7,7 +7,6 @@ from lru_cache import LruCache
 
 
 class TesLruCache(unittest.TestCase):
-
     def test_cache_normal(self):
         a = []
 
@@ -190,13 +189,17 @@ class TesLruCache(unittest.TestCase):
         a = []
 
         @LruCache()
-        def foo(self, num):
+        def foo(num):
             a.append(num)
             return num
 
         foo(1)
+        foo(1)
         self.assertEqual(a, [1])
-        foo.invalidate()
+        foo.invalidate(1)
+        foo(1)
+        self.assertEqual(a, [1, 1])
+
 
 if __name__ == "__main__":
     unittest.main()

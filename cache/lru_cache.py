@@ -8,7 +8,6 @@ from cache.ommited import OmittedType
 
 
 class LruCache(object):
-
     def __init__(self, maxsize=None, timeout=None):
         self.maxsize = maxsize
         self.timeout = timeout
@@ -18,8 +17,8 @@ class LruCache(object):
             self.is_full = False
             self.lock = RLock()
         elif (
-                (maxsize is None and timeout is None) or
-                (maxsize is None and timeout is not None)
+                    (maxsize is None and timeout is None) or
+                    (maxsize is None and timeout is not None)
         ):
             self.cache = {}
         elif maxsize is not None and timeout is None:
