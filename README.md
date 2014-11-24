@@ -15,6 +15,5 @@ pip install lru_cache
     def foo(num):
         return num
 
-#### TODO
-
-Add support for invalidating cache
+    # invalidate cache
+    foo.invalidate(num)
