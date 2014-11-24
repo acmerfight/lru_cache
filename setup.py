@@ -5,7 +5,7 @@ setup(
     version='0.2.1',
     author='acmerfight',
     author_email='acmerfight@gmail.com',
-    packages=['lru_cache'],
+    packages=['cache'],
     url='https://github.com/acmerfight/lru_cache',
     license='MIT',
     description='thread safe lru cache',
