@@ -9,7 +9,7 @@ pip install lru_cache
 
 #### how to use
 
-    from lru_cache import LruCache
+    from cache import LruCache
 
     @LruCache(maxsize=2, timeout=1)
     def foo(num):
