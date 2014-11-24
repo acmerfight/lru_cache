@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='lru_cache',
-    version='0.2.1',
+    version='0.2.2',
     author='acmerfight',
     author_email='acmerfight@gmail.com',
     packages=['cache'],
