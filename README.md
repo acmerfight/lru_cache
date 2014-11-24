@@ -9,12 +9,12 @@ pip install lru_cache
 
 #### how to use
 
-    from cache import LruCache
+    from lru_cache import LruCache
 
     @LruCache(maxsize=2, timeout=1)
     def foo(num):
         return num
-        
+
 #### TODO
 
 Add support for invalidating cache
