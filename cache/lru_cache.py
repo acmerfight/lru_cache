@@ -17,8 +17,8 @@ class LruCache(object):
             self.is_full = False
             self.lock = RLock()
         elif (
-                    (maxsize is None and timeout is None) or
-                    (maxsize is None and timeout is not None)
+                (maxsize is None and timeout is None) or
+                (maxsize is None and timeout is not None)
         ):
             self.cache = {}
         elif maxsize is not None and timeout is None:
@@ -28,8 +28,8 @@ class LruCache(object):
 
     def __call__(self, func):
         if self.timeout is not None and self.maxsize is not None:
-            def wrapper(*args, **kwds):
-                key = self.make_key(args, kwds)
+            def wrapper(*args, **kwargs):
+                key = self.make_key(args, kwargs)
                 with self.lock:
                     result_tuple = self.cache.get(key, self.Omitted_object)
                     if result_tuple is not self.Omitted_object:
@@ -41,7 +41,7 @@ class LruCache(object):
                         else:
                             del self.cache[key]
                             self.is_full = (len(self.cache) >= self.maxsize)
-                result_tuple = func(*args, **kwds), int(time.time())
+                result_tuple = func(*args, **kwargs), int(time.time())
                 with self.lock:
                     if key in self.cache:
                         pass
@@ -53,23 +53,23 @@ class LruCache(object):
                         self.is_full = (len(self.cache) >= self.maxsize)
                 return result_tuple[0]
         elif self.timeout is None and self.maxsize is None:
-            def wrapper(*args, **kwds):
-                key = self.make_key(args, kwds)
+            def wrapper(*args, **kwargs):
+                key = self.make_key(args, kwargs)
                 result = self.cache.get(key, self.Omitted_object)
                 if result is self.Omitted_object:
-                    result = func(*args, **kwds)
+                    result = func(*args, **kwargs)
                     self.cache[key] = result
                 return result
         elif self.timeout is None and self.maxsize is not None:
-            def wrapper(*args, **kwds):
-                key = self.make_key(args, kwds)
+            def wrapper(*args, **kwargs):
+                key = self.make_key(args, kwargs)
                 with self.lock:
                     result = self.cache.get(key, self.Omitted_object)
                     if result is not self.Omitted_object:
                         del self.cache[key]
                         self.cache[key] = result
                         return result
-                result = func(*args, **kwds)
+                result = func(*args, **kwargs)
                 with self.lock:
                     if key in self.cache:
                         pass
@@ -81,8 +81,8 @@ class LruCache(object):
                         self.is_full = (len(self.cache) >= self.maxsize)
                 return result
         elif self.timeout is not None and self.maxsize is None:
-            def wrapper(*args, **kwds):
-                key = self.make_key(args, kwds)
+            def wrapper(*args, **kwargs):
+                key = self.make_key(args, kwargs)
                 result_tuple = self.cache.get(key, self.Omitted_object)
                 if result_tuple is not self.Omitted_object:
                     result, old_time = result_tuple
@@ -90,7 +90,7 @@ class LruCache(object):
                         return result
                     else:
                         del self.cache[key]
-                result_tuple = func(*args, **kwds), int(time.time())
+                result_tuple = func(*args, **kwargs), int(time.time())
                 self.cache[key] = result_tuple
                 return result_tuple[0]
         wrapper.__name__ = func.__name__
@@ -98,16 +98,15 @@ class LruCache(object):
         wrapper.invalidate = self.invalidate
         return wrapper
 
-    def invalidate(self, *args, **kwds):
-        key = self.make_key(args, kwds)
+    def invalidate(self, *args, **kwargs):
+        key = self.make_key(args, kwargs)
         del self.cache[key]
 
-
     @staticmethod
-    def make_key(args, kwds):
+    def make_key(args, kwargs):
         key = args
-        if kwds:
-            sorted_items = sorted(kwds.items())
+        if kwargs:
+            sorted_items = sorted(kwargs.items())
             for item in sorted_items:
                 key += item
         return key
