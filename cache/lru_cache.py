@@ -12,10 +12,10 @@ class LruCache(object):
         self.maxsize = maxsize
         self.timeout = timeout
         self.Omitted_object = OmittedType()
+        self.lock = RLock()
         if maxsize is not None and timeout is not None:
             self.cache = OrderedDict()
             self.is_full = False
-            self.lock = RLock()
         elif (
                 (maxsize is None and timeout is None) or
                 (maxsize is None and timeout is not None)
@@ -24,7 +24,6 @@ class LruCache(object):
         elif maxsize is not None and timeout is None:
             self.cache = OrderedDict()
             self.is_full = False
-            self.lock = RLock()
 
     def __call__(self, func):
         if self.timeout is not None and self.maxsize is not None:
