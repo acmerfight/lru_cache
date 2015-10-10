@@ -88,8 +88,9 @@ class LruCache(object):
                     result, old_time = result_tuple
                     if int(time.time()) - old_time <= self.timeout:
                         return result
-                    else:
-                        del self.cache[key]
+                    with self.lock:
+                        if key in self.cache:
+                            del self.cache[key]
                 result_tuple = func(*args, **kwargs), int(time.time())
                 self.cache[key] = result_tuple
                 return result_tuple[0]
@@ -100,7 +101,9 @@ class LruCache(object):
 
     def invalidate(self, *args, **kwargs):
         key = self.make_key(args, kwargs)
-        del self.cache[key]
+        with self.lock:
+            if key in self.cache:
+                del self.cache[key]
 
     @staticmethod
     def make_key(args, kwargs):
