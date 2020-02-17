@@ -4,7 +4,7 @@ import time
 from collections import OrderedDict
 from threading import RLock
 
-from cache.ommited import OmittedType
+from .ommited import OmittedType
 
 
 class LruCache(object):

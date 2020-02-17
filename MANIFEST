@@ -4,4 +4,3 @@ setup.py
 cache/__init__.py
 cache/lru_cache.py
 cache/ommited.py
-cache/tests.py
