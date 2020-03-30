@@ -3,7 +3,8 @@ import random
 import time
 import threading
 import unittest
-from lru_cache import LruCache
+
+from cache import LruCache
 
 
 class TesLruCache(unittest.TestCase):
@@ -66,7 +67,7 @@ class TesLruCache(unittest.TestCase):
             a.append(num)
             return num
 
-        for i in xrange(10):
+        for i in range(10):
             threading.Thread(target=foo, args=(i, )).start()
 
         main_thread = threading.currentThread()
@@ -92,7 +93,7 @@ class TesLruCache(unittest.TestCase):
             b.append(num)
             return num + 1
 
-        for i in xrange(10):
+        for i in range(10):
             threading.Thread(target=foo, args=(i, )).start()
             threading.Thread(target=bar, args=(i, )).start()
 

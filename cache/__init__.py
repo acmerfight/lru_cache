@@ -1,1 +1,1 @@
-from lru_cache import LruCache
+from .lru_cache import LruCache
